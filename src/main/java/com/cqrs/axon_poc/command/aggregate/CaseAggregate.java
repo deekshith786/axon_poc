@@ -32,9 +32,19 @@ public class CaseAggregate {
         log.info("CreateCaseCommand received.");
 
 //        when a case is created this need to create an Case created Event for that we will use the Aggregatelifecycle.apply method
-//        AggregateLifecycle.apply(new CaseCreatedEvent(
-//                createCaseCommand.getId(),
-//                createCaseCommand.getName()
-//        ));
+        AggregateLifecycle.apply(new CaseCreatedEvent(
+                createCaseCommand.getId(),
+                createCaseCommand.getName(),
+                createCaseCommand.getDescription(),
+                createCaseCommand.getPhone()
+        ));
+    }
+
+    public void on(CaseCreatedEvent caseCreatedEvent){
+        log.info("CaseCreatedEvent created.");
+        this.id = caseCreatedEvent.getId();
+        this.description = caseCreatedEvent.getDescription();
+        this.phone = caseCreatedEvent.getPhone();
+        this.name = caseCreatedEvent.getName();
     }
 }
