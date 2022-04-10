@@ -1,6 +1,6 @@
 package com.cqrs.axon_poc.command.aggregate;
 
-import com.cqrs.axon_poc.command.commands.CreateProfileCommad;
+import com.cqrs.axon_poc.command.commands.CreateProfileCommand;
 import com.cqrs.axon_poc.command.events.ProfileCreatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -8,8 +8,6 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.beans.BeanUtils;
-
-import java.util.UUID;
 
 @Aggregate
 public class ProfileAggregate {
@@ -24,13 +22,13 @@ public class ProfileAggregate {
     }
 
     @CommandHandler
-    public ProfileAggregate(CreateProfileCommad createProfileCommad) {
+    public ProfileAggregate(CreateProfileCommand createProfileCommand) {
 
         // here we can perform all the validation and business logic
 
         ProfileCreatedEvent profileCreatedEvent = new ProfileCreatedEvent();
 
-        BeanUtils.copyProperties(createProfileCommad, profileCreatedEvent);
+        BeanUtils.copyProperties(createProfileCommand, profileCreatedEvent);
 
         AggregateLifecycle.apply(profileCreatedEvent);
     }

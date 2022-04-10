@@ -1,6 +1,6 @@
 package com.cqrs.axon_poc.command.controller;
 
-import com.cqrs.axon_poc.command.commands.CreateProfileCommad;
+import com.cqrs.axon_poc.command.commands.CreateProfileCommand;
 import com.cqrs.axon_poc.command.model.ProfileRestModel;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,15 +32,15 @@ public class ProfileController {
 //        Here we are creating the object of the command to create a profile
 //        Similarly we will and should create respective commad for other operations like find, delete, update etc
 
-        CreateProfileCommad createProfileCommad =
-                CreateProfileCommad.builder()
+        CreateProfileCommand createProfileCommand =
+                CreateProfileCommand.builder()
                         .id(UUID.randomUUID().toString())
                         .description(profileRestModel.getDescription())
                         .name(profileRestModel.getName())
                         .phone(profileRestModel.getPhone())
                         .build();
 
-        String result = commandGateway.sendAndWait(createProfileCommad);
+        String result = commandGateway.sendAndWait(createProfileCommand);
         return result;
     }
 }

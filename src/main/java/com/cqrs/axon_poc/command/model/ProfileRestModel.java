@@ -7,7 +7,6 @@ import lombok.Data;
 @Builder
 public class ProfileRestModel {
 
-    private String id;
     private String description;
     private String name;
     private String phone;
