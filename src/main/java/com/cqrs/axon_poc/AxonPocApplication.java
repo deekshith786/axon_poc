@@ -1,5 +1,8 @@
 package com.cqrs.axon_poc;
 
+import com.cqrs.axon_poc.command.exception.ProfileServiceErrorHandler;
+import org.axonframework.config.EventProcessingConfigurer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,4 +13,11 @@ public class AxonPocApplication {
 		SpringApplication.run(AxonPocApplication.class, args);
 	}
 
+	@Autowired
+	public void configure(EventProcessingConfigurer configurer){
+		configurer.registerListenerInvocationErrorHandler(
+				"profile",
+				configuration -> new ProfileServiceErrorHandler()
+		);
+	}
 }
