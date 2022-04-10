@@ -4,7 +4,9 @@ import com.cqrs.axon_poc.command.entity.Profile;
 import com.cqrs.axon_poc.command.repository.ProfileRepository;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProfileEventHandler {
 
 
