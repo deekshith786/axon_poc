@@ -5,6 +5,7 @@ import com.cqrs.axon_poc.command.model.ProfileRestModel;
 import com.cqrs.axon_poc.command.repository.ProfileRepository;
 import com.cqrs.axon_poc.query.queries.GetProfileByIdQuery;
 import com.cqrs.axon_poc.query.queries.GetProfileQuery;
+import org.axonframework.config.ProcessingGroup;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@ProcessingGroup("profile")
 public class ProfileProjection {
 
     private ProfileRepository profileRepository;
@@ -36,14 +38,20 @@ public class ProfileProjection {
     }
 
     @QueryHandler
-    public ProfileRestModel getProfileById(GetProfileByIdQuery getProfileByIdQuery){
-        Profile profile = profileRepository.findById(getProfileByIdQuery.getId()).orElse(null);
-        ProfileRestModel profileRestModel = ProfileRestModel.builder()
-                .id(getProfileByIdQuery.getId())
-                .name(profile.getName())
-                .description(profile.getDescription())
-                .phone(profile.getPhone())
-                .build();
-        return profileRestModel;
+    public ProfileRestModel getProfileById(GetProfileByIdQuery getProfileByIdQuery) throws Exception {
+        if(profileRepository.existsById(getProfileByIdQuery.getId())){
+            Profile profile = profileRepository.findById(getProfileByIdQuery.getId()).orElse(null);
+            ProfileRestModel profileRestModel = ProfileRestModel.builder()
+                    .id(getProfileByIdQuery.getId())
+                    .name(profile.getName())
+                    .description(profile.getDescription())
+                    .phone(profile.getPhone())
+                    .build();
+            return profileRestModel;
+        }
+        else
+        {
+            throw new Exception("No User assosiated with ProfileId"+ getProfileByIdQuery.getId());
+        }
     }
 }

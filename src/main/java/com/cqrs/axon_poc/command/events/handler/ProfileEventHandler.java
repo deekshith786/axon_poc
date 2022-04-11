@@ -33,7 +33,7 @@ public class ProfileEventHandler {
     }
 
     @EventHandler
-    public void updateProfile(ProfileUpdatedEvent event) {
+    public void updateProfile(ProfileUpdatedEvent event) throws Exception {
         log.info("finding the user");
         log.info("old_Profile_id = " + profileRepository.findById(event.getId()).get().toString());
         if (profileRepository.existsById(event.getId())) {
@@ -46,17 +46,18 @@ public class ProfileEventHandler {
             profileRepository.save(newProfile);
         } else {
             log.info("USer not found");
+            throw new Exception("User not found");
         }
     }
 
     @EventHandler
-    public void deleteProfile(ProfileDeleteEvent event) {
+    public void deleteProfile(ProfileDeleteEvent event) throws Exception {
 
         log.info("Profile ID : " + event.getId());
         if (profileRepository.existsById(event.getId())) {
             profileRepository.deleteById(event.getId());
         } else
-            log.info("No user found");
+            throw new Exception("User not found");
     }
 
     @ExceptionHandler
