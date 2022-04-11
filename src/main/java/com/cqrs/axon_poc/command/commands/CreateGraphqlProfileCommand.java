@@ -4,12 +4,9 @@ import lombok.Builder;
 import lombok.Data;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
-/**
- * this class {@link CreateProfileCommand} commands and event will be having the state(payload) of what we are going to do
- */
 @Data
 @Builder
-public class CreateProfileCommand {
+public class CreateGraphqlProfileCommand {
 
     @TargetAggregateIdentifier
     private String id;

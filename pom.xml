@@ -51,7 +51,18 @@
 			<artifactId>guava</artifactId>
 			<version>30.1.1-jre</version>
 		</dependency>
-
+		<!-- GraphQL Java Kickstart  -->
+		<dependency>
+			<groupId>com.graphql-java-kickstart</groupId>
+			<artifactId>graphql-spring-boot-starter</artifactId>
+			<version>12.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.graphql-java-kickstart</groupId>
+			<artifactId>graphql-spring-boot-starter-test</artifactId>
+			<version>12.0.0</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 

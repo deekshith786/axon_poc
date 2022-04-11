@@ -1,6 +1,7 @@
 package com.cqrs.axon_poc.command.events.handler;
 
 import com.cqrs.axon_poc.command.entity.Profile;
+import com.cqrs.axon_poc.command.events.GraphqlProfileCreatedEvent;
 import com.cqrs.axon_poc.command.events.ProfileCreatedEvent;
 import com.cqrs.axon_poc.command.events.ProfileDeleteEvent;
 import com.cqrs.axon_poc.command.events.ProfileUpdatedEvent;
@@ -58,6 +59,13 @@ public class ProfileEventHandler {
             profileRepository.deleteById(event.getId());
         } else
             throw new Exception("User not found");
+    }
+
+    public void addGraphqlProfile(GraphqlProfileCreatedEvent graphqlProfileCreatedEvent){
+        log.info("graphqlProfileCreatedEvent created");
+        Profile profile = new Profile();
+        BeanUtils.copyProperties(graphqlProfileCreatedEvent, profile);
+        profileRepository.save(profile);
     }
 
     @ExceptionHandler

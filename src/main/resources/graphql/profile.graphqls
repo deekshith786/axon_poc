@@ -1,0 +1,23 @@
+type Profile{
+    id: ID
+    name: String
+    description: String
+    phone: String
+}
+
+input ProfileInput {
+    id: ID
+    name: String
+    description: String
+    phone: String
+}
+
+type Query {
+    getAllProfiles: [Profile]
+    #getProfileById(id: String): Profile!
+}
+
+type Mutation {
+    addProfile(input: ProfileInput): Profile
+    #deleteProfile(id: String): String
+}
