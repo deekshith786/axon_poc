@@ -1,0 +1,14 @@
+1. Controller will have the REST APIs.
+2. The controller will create and send a particular command to the command gateway.
+3. Now, we need to Aggregate for it.
+4. The Aggregate will handle the command which is being sent to it.
+5. The Aggregate will identify our command as we added the "TargetAggregateIdentifier" annotation.
+6. For Aggregate we should add @AggregateIdentifier.
+7. Now, for the Aggregate to work, we should have a default constructor and a defined constructor which takes the specific command.
+8. In the defined constructor we can write our Business-Logic.
+9. After writing our logic, we need to raise an event to store into an event store.
+10. Event Object should be built in the Aggregate after logic.
+11. Now, publish this event using AggregateLifecycle.apply().
+12. We need to update the store of the Aggregate for all the commands and events.
+13. We need to create the EventHandler to handle the event published to the event store and annotate it with @EventHandler.
+14. So, here we will save the payload to the repository and Database.

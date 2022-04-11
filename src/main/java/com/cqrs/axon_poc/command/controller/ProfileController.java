@@ -1,7 +1,9 @@
 package com.cqrs.axon_poc.command.controller;
 
 import com.cqrs.axon_poc.command.commands.CreateProfileCommand;
+import com.cqrs.axon_poc.command.commands.UpdateProfileCommand;
 import com.cqrs.axon_poc.command.model.ProfileRestModel;
+import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +17,7 @@ import java.util.UUID;
  * The point to make a note is this controller only handles situations when we need to write on DB
  * like only POST, PUT, UPDATE, DELETE and so on need to be used but not the GET
  */
+@Slf4j
 @RestController
 @RequestMapping("/profile")
 public class ProfileController {
@@ -41,6 +44,21 @@ public class ProfileController {
                         .build();
 
         String result = commandGateway.sendAndWait(createProfileCommand);
+        return result;
+    }
+
+    @PostMapping("/update")
+    public String updateProfile(@RequestBody ProfileRestModel profileRestModel) {
+
+        UpdateProfileCommand updateProfileCommand = UpdateProfileCommand.builder()
+                .id(UUID.randomUUID().toString())
+                .description(profileRestModel.getDescription())
+                .name(profileRestModel.getName())
+                .phone(profileRestModel.getPhone())
+                .build();
+        log.info("UpdateProfileCommand command created");
+        log.info(updateProfileCommand.toString());
+        String result = commandGateway.sendAndWait(updateProfileCommand);
         return result;
     }
 }

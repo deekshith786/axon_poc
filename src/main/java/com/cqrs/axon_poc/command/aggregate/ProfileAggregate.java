@@ -1,7 +1,10 @@
 package com.cqrs.axon_poc.command.aggregate;
 
 import com.cqrs.axon_poc.command.commands.CreateProfileCommand;
+import com.cqrs.axon_poc.command.commands.UpdateProfileCommand;
 import com.cqrs.axon_poc.command.events.ProfileCreatedEvent;
+import com.cqrs.axon_poc.command.events.ProfileUpdatedEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
@@ -9,6 +12,7 @@ import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.beans.BeanUtils;
 
+@Slf4j
 @Aggregate
 public class ProfileAggregate {
 
@@ -25,6 +29,7 @@ public class ProfileAggregate {
     public ProfileAggregate(CreateProfileCommand createProfileCommand) {
 
         // here we can perform all the validation and business logic
+        // Also we need to create an event from the Aggregate
 
         ProfileCreatedEvent profileCreatedEvent = new ProfileCreatedEvent();
 
@@ -41,4 +46,23 @@ public class ProfileAggregate {
         this.id = profileCreatedEvent.getId();
 
     }
+
+    @CommandHandler
+    public ProfileAggregate(UpdateProfileCommand updateProfileCommand){
+
+        log.info("ProfileUpdatedEvent created");
+        log.info(updateProfileCommand.toString());
+        ProfileUpdatedEvent profileUpdatedEvent = new ProfileUpdatedEvent();
+        BeanUtils.copyProperties(updateProfileCommand, profileUpdatedEvent);
+        AggregateLifecycle.apply(profileUpdatedEvent);
+    }
+
+    @EventSourcingHandler
+    public void updateProfile(ProfileUpdatedEvent profileUpdatedEvent){
+        this.description = profileUpdatedEvent.getDescription();
+        this.name = profileUpdatedEvent.getName();
+        this.phone = profileUpdatedEvent.getPhone();
+        this.id = profileUpdatedEvent.getId();
+    }
+
 }
