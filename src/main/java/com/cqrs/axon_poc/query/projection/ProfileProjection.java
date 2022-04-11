@@ -3,6 +3,7 @@ package com.cqrs.axon_poc.query.projection;
 import com.cqrs.axon_poc.command.entity.Profile;
 import com.cqrs.axon_poc.command.model.ProfileRestModel;
 import com.cqrs.axon_poc.command.repository.ProfileRepository;
+import com.cqrs.axon_poc.query.queries.GetProfileByIdQuery;
 import com.cqrs.axon_poc.query.queries.GetProfileQuery;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Component;
@@ -32,5 +33,17 @@ public class ProfileProjection {
                 .build())
                 .collect(Collectors.toList());
         return profileRestModels;
+    }
+
+    @QueryHandler
+    public ProfileRestModel getProfileById(GetProfileByIdQuery getProfileByIdQuery){
+        Profile profile = profileRepository.findById(getProfileByIdQuery.getId()).orElse(null);
+        ProfileRestModel profileRestModel = ProfileRestModel.builder()
+                .id(getProfileByIdQuery.getId())
+                .name(profile.getName())
+                .description(profile.getDescription())
+                .phone(profile.getPhone())
+                .build();
+        return profileRestModel;
     }
 }
