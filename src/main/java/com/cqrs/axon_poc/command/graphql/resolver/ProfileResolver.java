@@ -28,17 +28,18 @@ public class ProfileResolver implements GraphQLQueryResolver, GraphQLMutationRes
 
     public Profile addProfile(ProfileInput profileInput){
 
-//        CreateGraphqlProfileCommand createGraphqlProfileCommand = CreateGraphqlProfileCommand.builder()
-//                .id(profileInput.getId())
-//                .description(profileInput.getDescription())
-//                .name(profileInput.getName())
-//                .phone(profileInput.getPhone())
-//                .build();
-//        commandGateway.sendAndWait(createGraphqlProfileCommand);
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> mp = objectMapper.convertValue(profileInput, Map.class);
-        Profile profile = objectMapper.convertValue(mp, Profile.class);
-        return profileRepository.save(profile);
+        CreateGraphqlProfileCommand createGraphqlProfileCommand = CreateGraphqlProfileCommand.builder()
+                .id(profileInput.getId())
+                .description(profileInput.getDescription())
+                .name(profileInput.getName())
+                .phone(profileInput.getPhone())
+                .build();
+        commandGateway.sendAndWait(createGraphqlProfileCommand);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        Map<String, Object> mp = objectMapper.convertValue(profileInput, Map.class);
+//        Profile profile = objectMapper.convertValue(mp, Profile.class);
+//        return profileRepository.save(profile);
+        return null;
     }
 
     public List<Profile> getAllProfiles(){

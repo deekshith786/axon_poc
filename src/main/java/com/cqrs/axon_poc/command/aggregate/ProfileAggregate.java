@@ -90,6 +90,7 @@ public class ProfileAggregate {
         AggregateLifecycle.apply(graphqlProfileCreatedEvent);
     }
 
+    @EventSourcingHandler
     public void addGraphqlProfile(GraphqlProfileCreatedEvent graphqlProfileCreatedEvent) {
         this.description = graphqlProfileCreatedEvent.getDescription();
         this.name = graphqlProfileCreatedEvent.getName();
