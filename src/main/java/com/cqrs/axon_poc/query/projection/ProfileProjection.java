@@ -27,6 +27,7 @@ public class ProfileProjection {
                 .builder()
                 .description(profile.getDescription())
                 .name(profile.getName())
+                .id(profile.getId())
                 .phone(profile.getPhone())
                 .build())
                 .collect(Collectors.toList());

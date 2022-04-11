@@ -1,14 +1,12 @@
 package com.cqrs.axon_poc.command.controller;
 
 import com.cqrs.axon_poc.command.commands.CreateProfileCommand;
+import com.cqrs.axon_poc.command.commands.DeleteProfileCommand;
 import com.cqrs.axon_poc.command.commands.UpdateProfileCommand;
 import com.cqrs.axon_poc.command.model.ProfileRestModel;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -47,18 +45,26 @@ public class ProfileController {
         return result;
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public String updateProfile(@RequestBody ProfileRestModel profileRestModel) {
 
         UpdateProfileCommand updateProfileCommand = UpdateProfileCommand.builder()
-                .id(UUID.randomUUID().toString())
+                .id(profileRestModel.getId())
                 .description(profileRestModel.getDescription())
                 .name(profileRestModel.getName())
                 .phone(profileRestModel.getPhone())
                 .build();
         log.info("UpdateProfileCommand command created");
-        log.info(updateProfileCommand.toString());
         String result = commandGateway.sendAndWait(updateProfileCommand);
+        return result;
+    }
+
+    @DeleteMapping("/delete")
+    public String deleteProfile(@RequestParam String profileId){
+
+        DeleteProfileCommand deleteProfileCommand = DeleteProfileCommand.builder().id(profileId).build();
+        log.info("DeleteProfileCommand created");
+        String result = commandGateway.sendAndWait(deleteProfileCommand);
         return result;
     }
 }

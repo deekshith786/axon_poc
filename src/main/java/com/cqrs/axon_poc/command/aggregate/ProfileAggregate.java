@@ -1,8 +1,10 @@
 package com.cqrs.axon_poc.command.aggregate;
 
 import com.cqrs.axon_poc.command.commands.CreateProfileCommand;
+import com.cqrs.axon_poc.command.commands.DeleteProfileCommand;
 import com.cqrs.axon_poc.command.commands.UpdateProfileCommand;
 import com.cqrs.axon_poc.command.events.ProfileCreatedEvent;
+import com.cqrs.axon_poc.command.events.ProfileDeleteEvent;
 import com.cqrs.axon_poc.command.events.ProfileUpdatedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
@@ -48,7 +50,7 @@ public class ProfileAggregate {
     }
 
     @CommandHandler
-    public ProfileAggregate(UpdateProfileCommand updateProfileCommand){
+    public void updateProfileCommand(UpdateProfileCommand updateProfileCommand){
 
         log.info("ProfileUpdatedEvent created");
         log.info(updateProfileCommand.toString());
@@ -63,6 +65,19 @@ public class ProfileAggregate {
         this.name = profileUpdatedEvent.getName();
         this.phone = profileUpdatedEvent.getPhone();
         this.id = profileUpdatedEvent.getId();
+    }
+
+    @CommandHandler
+    public void deleteProfileCommand(DeleteProfileCommand deleteProfileCommand) {
+        log.info("ProfileDeleteEvent created");
+        ProfileDeleteEvent profileDeleteEvent = ProfileDeleteEvent.builder().id(deleteProfileCommand.getId()).build();
+        log.info("ProfileDeleteEvent = " + profileDeleteEvent);
+        AggregateLifecycle.apply(profileDeleteEvent);
+    }
+
+    @EventSourcingHandler
+    public void deleteProfile(ProfileDeleteEvent profileDeleteEvent){
+        this.id = profileDeleteEvent.getId();
     }
 
 }
