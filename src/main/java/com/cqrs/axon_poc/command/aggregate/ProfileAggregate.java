@@ -1,10 +1,8 @@
 package com.cqrs.axon_poc.command.aggregate;
 
-import com.cqrs.axon_poc.command.commands.CreateGraphqlProfileCommand;
 import com.cqrs.axon_poc.command.commands.CreateProfileCommand;
 import com.cqrs.axon_poc.command.commands.DeleteProfileCommand;
 import com.cqrs.axon_poc.command.commands.UpdateProfileCommand;
-import com.cqrs.axon_poc.command.events.GraphqlProfileCreatedEvent;
 import com.cqrs.axon_poc.command.events.ProfileCreatedEvent;
 import com.cqrs.axon_poc.command.events.ProfileDeleteEvent;
 import com.cqrs.axon_poc.command.events.ProfileUpdatedEvent;
@@ -32,13 +30,9 @@ public class ProfileAggregate {
     @CommandHandler
     public ProfileAggregate(CreateProfileCommand createProfileCommand) {
 
-        // here we can perform all the validation and business logic
-        // Also we need to create an event from the Aggregate
-
+        log.info("CreateProfileCommand received");
         ProfileCreatedEvent profileCreatedEvent = new ProfileCreatedEvent();
-
         BeanUtils.copyProperties(createProfileCommand, profileCreatedEvent);
-
         AggregateLifecycle.apply(profileCreatedEvent);
     }
 
@@ -48,13 +42,12 @@ public class ProfileAggregate {
         this.name = profileCreatedEvent.getName();
         this.phone = profileCreatedEvent.getPhone();
         this.id = profileCreatedEvent.getId();
-
     }
 
     @CommandHandler
     public void updateProfileCommand(UpdateProfileCommand updateProfileCommand) {
 
-        log.info("ProfileUpdatedEvent created");
+        log.info("ProfileUpdatedEvent received");
         log.info(updateProfileCommand.toString());
         ProfileUpdatedEvent profileUpdatedEvent = new ProfileUpdatedEvent();
         BeanUtils.copyProperties(updateProfileCommand, profileUpdatedEvent);
@@ -71,7 +64,7 @@ public class ProfileAggregate {
 
     @CommandHandler
     public void deleteProfileCommand(DeleteProfileCommand deleteProfileCommand) {
-        log.info("ProfileDeleteEvent created");
+        log.info("ProfileDeleteEvent received");
         ProfileDeleteEvent profileDeleteEvent = ProfileDeleteEvent.builder().id(deleteProfileCommand.getId()).build();
         log.info("ProfileDeleteEvent = " + profileDeleteEvent);
         AggregateLifecycle.apply(profileDeleteEvent);
@@ -80,21 +73,5 @@ public class ProfileAggregate {
     @EventSourcingHandler
     public void deleteProfile(ProfileDeleteEvent profileDeleteEvent) {
         this.id = profileDeleteEvent.getId();
-    }
-
-    @CommandHandler
-    public void addProfileUsingGraphql(CreateGraphqlProfileCommand createGraphqlProfileCommand) {
-        log.info("createGraphqlProfileCommand created");
-        GraphqlProfileCreatedEvent graphqlProfileCreatedEvent = new GraphqlProfileCreatedEvent();
-        BeanUtils.copyProperties(createGraphqlProfileCommand, graphqlProfileCreatedEvent);
-        AggregateLifecycle.apply(graphqlProfileCreatedEvent);
-    }
-
-    @EventSourcingHandler
-    public void addGraphqlProfile(GraphqlProfileCreatedEvent graphqlProfileCreatedEvent) {
-        this.description = graphqlProfileCreatedEvent.getDescription();
-        this.name = graphqlProfileCreatedEvent.getName();
-        this.phone = graphqlProfileCreatedEvent.getPhone();
-        this.id = graphqlProfileCreatedEvent.getId();
     }
 }

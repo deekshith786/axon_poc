@@ -29,10 +29,6 @@ public class ProfileController {
     @PostMapping
     public String addProfile(@RequestBody ProfileRestModel profileRestModel) {
 
-//        A command should be created to store the payload of the profile model
-//        Here we are creating the object of the command to create a profile
-//        Similarly we will and should create respective commad for other operations like find, delete, update etc
-
         CreateProfileCommand createProfileCommand =
                 CreateProfileCommand.builder()
                         .id(UUID.randomUUID().toString())

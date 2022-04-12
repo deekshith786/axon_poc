@@ -61,6 +61,7 @@ public class ProfileEventHandler {
             throw new Exception("User not found");
     }
 
+    @EventHandler
     public void addGraphqlProfile(GraphqlProfileCreatedEvent graphqlProfileCreatedEvent){
         log.info("graphqlProfileCreatedEvent created");
         Profile profile = new Profile();
