@@ -1,4 +1,4 @@
-package com.cqrs.axon_poc.command.graphql.inputs;
+package com.cqrs.axon_poc.command.inputs;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

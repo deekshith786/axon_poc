@@ -1,18 +1,16 @@
-package com.cqrs.axon_poc.command.graphql.resolver;
+package com.cqrs.axon_poc.command.commandResolver;
 
 import com.cqrs.axon_poc.command.commands.CreateProfileCommand;
 import com.cqrs.axon_poc.command.entity.Profile;
-import com.cqrs.axon_poc.command.graphql.inputs.ProfileInput;
+import com.cqrs.axon_poc.command.inputs.ProfileInput;
 import com.cqrs.axon_poc.command.model.ProfileRestModel;
 import com.cqrs.axon_poc.command.repository.ProfileRepository;
 import graphql.kickstart.tools.GraphQLMutationResolver;
-import graphql.kickstart.tools.GraphQLQueryResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j

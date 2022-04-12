@@ -38,6 +38,11 @@ public class ProfileProjection {
     }
 
     @QueryHandler
+    public List<Profile> getallProfiles(GetProfileQuery getProfileQuery){
+        return profileRepository.findAll();
+    }
+
+    @QueryHandler
     public ProfileRestModel getProfileById(GetProfileByIdQuery getProfileByIdQuery) throws Exception {
         if(profileRepository.existsById(getProfileByIdQuery.getId())){
             Profile profile = profileRepository.findById(getProfileByIdQuery.getId()).orElse(null);
