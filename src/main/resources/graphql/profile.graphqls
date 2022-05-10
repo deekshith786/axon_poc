@@ -1,15 +1,43 @@
 type Profile{
-    id: ID
-    name: String
-    description: String
-    phone: String
+    employee_Number: ID
+    employee_Code: String
+    first_Name: String
+    middle_Name: String
+    last_Name: String
+    date_Of_Joining: String
+    email: String
+    date_Of_Birth: String
+    gender: String
+    role: String
+    job_Title: String
+    job_Role: String
+    client_Company: String
+    client_Company_Team: String
+    client_Reporting_Manager: String
+    qualification: String
+    skill_Matrix: String
+    status: String
 }
 
 input ProfileInput {
-    id: ID
-    name: String
-    description: String
-    phone: String
+    employee_Number: ID
+    employee_Code: String
+    first_Name: String
+    middle_Name: String
+    last_Name: String
+    date_Of_Joining: String
+    email: String
+    date_Of_Birth: String
+    gender: String
+    role: String
+    job_Title: String
+    job_Role: String
+    client_Company: String
+    client_Company_Team: String
+    client_Reporting_Manager: String
+    qualification: String
+    skill_Matrix: String
+    status: String
 }
 
 type Query {
