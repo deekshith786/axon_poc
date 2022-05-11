@@ -19,6 +19,21 @@ type Profile{
     status: String
 }
 
+type Address {
+
+    employeeCode: ID
+    houseOrFlatNumber: String
+    street: String
+    area: String
+    locality: String
+    city: String
+    zipcode: String
+    state: String
+    country: String
+    mobileNumber: String
+    landlineNumber: String
+
+}
 input ProfileInput {
     employee_Number: ID
     employee_Code: String
@@ -40,12 +55,31 @@ input ProfileInput {
     status: String
 }
 
+input AddressInput {
+
+    employeeCode: ID
+    houseOrFlatNumber: String
+    street: String
+    area: String
+    locality: String
+    city: String
+    zipcode: String
+    state: String
+    country: String
+    mobileNumber: String
+    landlineNumber: String
+
+
+}
+
 type Query {
     getAllProfiles: [Profile]
+    getAllAddress: [Address]
     #getProfileById(id: String): Profile!
 }
 
 type Mutation {
     addProfile(input: ProfileInput): Profile
+    addAddress(input: AddressInput): Address
     #deleteProfile(id: String): String
 }

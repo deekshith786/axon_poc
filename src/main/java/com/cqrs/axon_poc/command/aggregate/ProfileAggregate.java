@@ -1,12 +1,15 @@
 package com.cqrs.axon_poc.command.aggregate;
 
+import com.cqrs.axon_poc.command.commands.AddAddressCommand;
 import com.cqrs.axon_poc.command.commands.CreateProfileCommand;
+import com.cqrs.axon_poc.command.events.AddAddressEvent;
 import com.cqrs.axon_poc.command.events.ProfileCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
+import org.axonframework.modelling.command.AggregateMember;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.beans.BeanUtils;
 
@@ -16,7 +19,8 @@ public class ProfileAggregate {
 
     @AggregateIdentifier
     private String Employee_Number;
-    private String Employee_Code;
+
+    private String employeeCode;
     private String First_Name;
     private String Middle_Name;
     private String Last_Name;
@@ -34,6 +38,18 @@ public class ProfileAggregate {
     private String Skill_Matrix;
     private String Status;
 
+    private String houseOrFlatNumber;
+    private String street;
+    private String area;
+    private String locality;
+    private String city;
+    private String zipcode;
+    private String state;
+    private String country;
+    private String mobileNumber;
+    private String landlineNumber;
+
+
     public ProfileAggregate() {
     }
 
@@ -49,7 +65,7 @@ public class ProfileAggregate {
     @EventSourcingHandler
     public void on(ProfileCreatedEvent profileCreatedEvent) {
         this.Employee_Number = profileCreatedEvent.getEmployee_Number();
-        this.Employee_Code = profileCreatedEvent.getEmployee_Code();
+        this.employeeCode = profileCreatedEvent.getEmployee_Code();
         this.First_Name = profileCreatedEvent.getFirst_Name();
         this.Middle_Name = profileCreatedEvent.getMiddle_Name();
         this.Last_Name = profileCreatedEvent.getLast_Name();
@@ -68,23 +84,31 @@ public class ProfileAggregate {
         this.Status = profileCreatedEvent.getStatus();
 
     }
-//    @CommandHandler
-//    public void updateProfileCommand(UpdateProfileCommand updateProfileCommand) {
-//
-//        log.info("ProfileUpdatedEvent received");
-//        log.info(updateProfileCommand.toString());
-//        ProfileUpdatedEvent profileUpdatedEvent = new ProfileUpdatedEvent();
-//        BeanUtils.copyProperties(updateProfileCommand, profileUpdatedEvent);
-//        AggregateLifecycle.apply(profileUpdatedEvent);
-//    }
-//
-//    @EventSourcingHandler
-//    public void updateProfile(ProfileUpdatedEvent profileUpdatedEvent) {
-//        this.description = profileUpdatedEvent.getDescription();
-//        this.name = profileUpdatedEvent.getName();
-//        this.phone = profileUpdatedEvent.getPhone();
-//        this.id = profileUpdatedEvent.getId();
-//    }
+    @CommandHandler
+    public ProfileAggregate(AddAddressCommand addAddressCommand) {
+
+        log.info("AddAddressCommand received");
+        log.info(addAddressCommand.toString());
+        AddAddressEvent addAddressEvent = new AddAddressEvent();
+        BeanUtils.copyProperties(addAddressCommand, addAddressEvent);
+        AggregateLifecycle.apply(addAddressEvent);
+    }
+
+    @EventSourcingHandler
+    public void addAddress(AddAddressEvent addAddressEvent) {
+        this.Employee_Number = addAddressEvent.getEmployee_Number();
+        this.employeeCode = addAddressEvent.getEmployeeCode();
+        this.houseOrFlatNumber = addAddressEvent.getHouseOrFlatNumber();
+        this.street = addAddressEvent.getStreet();
+        this.area = addAddressEvent.getArea();
+        this.locality = addAddressEvent.getLocality();
+        this.city = addAddressEvent.getCity();
+        this.zipcode = addAddressEvent.getZipcode();
+        this.state = addAddressEvent.getState();
+        this.country = addAddressEvent.getCountry();
+        this.mobileNumber = addAddressEvent.getMobileNumber();
+        this.landlineNumber = addAddressEvent.getLandlineNumber();
+    }
 //
 //    @CommandHandler
 //    public void deleteProfileCommand(DeleteProfileCommand deleteProfileCommand) {

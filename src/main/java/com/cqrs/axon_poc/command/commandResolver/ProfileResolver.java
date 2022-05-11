@@ -1,7 +1,10 @@
 package com.cqrs.axon_poc.command.commandResolver;
 
+import com.cqrs.axon_poc.command.commands.AddAddressCommand;
 import com.cqrs.axon_poc.command.commands.CreateProfileCommand;
+import com.cqrs.axon_poc.command.entity.Address;
 import com.cqrs.axon_poc.command.entity.Profile;
+import com.cqrs.axon_poc.command.inputs.AddressInput;
 import com.cqrs.axon_poc.command.inputs.ProfileInput;
 import com.cqrs.axon_poc.command.repository.ProfileRepository;
 import graphql.kickstart.tools.GraphQLMutationResolver;
@@ -9,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Date;
 import java.util.UUID;
@@ -31,7 +33,7 @@ public class ProfileResolver implements GraphQLMutationResolver {
 
         CreateProfileCommand createProfileCommand = CreateProfileCommand.builder()
                 .Employee_Number(UUID.randomUUID().toString()).Employee_Code(input.getEmployee_Code()).First_Name(input.getFirst_Name())
-                .Middle_Name(input.getMiddle_Name()).Last_Name(input.getLast_Name()).Date_Of_Joining(new Date().toString())
+                .Middle_Name(input.getMiddle_Name()).Last_Name(input.getLast_Name()).Date_Of_Joining(input.getDate_Of_Joining()).Role(input.getRole())
                 .Email(input.getEmail()).Date_Of_Birth(input.getDate_Of_Birth()).Gender(input.getGender()).Job_Role(input.getJob_Role())
                 .Job_Title(input.getJob_Title()).Client_Company(input.getClient_Company()).Client_Company_Team(input.getClient_Company_Team())
                 .Client_Reporting_Manager(input.getClient_Reporting_Manager()).Qualification(input.getQualification()).Skill_Matrix(input.getSkill_Matrix())
@@ -41,6 +43,22 @@ public class ProfileResolver implements GraphQLMutationResolver {
         Profile profile = new Profile();
         BeanUtils.copyProperties(createProfileCommand, profile);
         return profile;
+    }
+
+    public Address addAddress(AddressInput input) {
+
+        log.info(input.toString());
+        AddAddressCommand addAddressCommand = AddAddressCommand.builder()
+                .Employee_Number(UUID.randomUUID().toString())
+                .employeeCode(input.getEmployeeCode()).houseOrFlatNumber(input.getHouseOrFlatNumber()).street(input.getStreet())
+                .area(input.getArea()).locality(input.getLocality()).city(input.getCity()).zipcode(input.getZipcode())
+                .state(input.getState()).country(input.getCountry()).mobileNumber(input.getMobileNumber()).landlineNumber(input.getLandlineNumber())
+                .build();
+        log.info("sending graphql create command");
+        commandGateway.sendAndWait(addAddressCommand);
+        Address address = new Address();
+        BeanUtils.copyProperties(addAddressCommand, address);
+        return address;
     }
 
 }
